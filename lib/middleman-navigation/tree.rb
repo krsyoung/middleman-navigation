@@ -33,7 +33,8 @@ module Middleman
 
       def self.visible_children(resource)
         visible = resource.children
-        visible.select!{|child| !with_defaults(child.data.navigation)[:hidden]}
+        # skip all children with data but marked as hidden as well as children without data
+        visible.select!{|child| !with_defaults(child.data.navigation)[:hidden] and child.data.present? }
         visible.sort! {|a, b| with_defaults(a.data.navigation)[:weight] <=> with_defaults(b.data.navigation)[:weight]}
         visible
       end
